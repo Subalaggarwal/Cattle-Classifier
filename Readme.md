@@ -11,8 +11,7 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
 - 🖼️ **Real-time Prediction** – Upload an image or use your camera to instantly classify the cattle breed.  
 - 📊 **Top-3 Confidence Scores** – Displays the top 3 predicted breeds with confidence percentages.  
 - 📘 **Detailed Breed Information** – Includes origin, primary use, key traits, and milk yield for 30+ Indian breeds (loaded from `config.py`).  
-- 🔊 **Voice Output** – Hear the predicted breed name and a brief description using the “Read Aloud” feature.  
-- 🧠 **Transfer Learning** – Fine-tuned **ResNet-50** model for high accuracy.  
+- 🧠 **Transfer Learning** – Fine-tuned **ResNet-50** model.  
 - ⚡ **User-Friendly Web App** – Built using **Streamlit** for an intuitive interface.  
 
 ---
