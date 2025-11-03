@@ -1,4 +1,3 @@
-# train.py
 import os
 import shutil
 import torch
@@ -13,7 +12,7 @@ import matplotlib.pyplot as plt
 from dataset import CattleDataset
 from model import create_resnet50
 
-# --- base directories ---
+
 root_dir = r'C:\\Users\\ACER\\Desktop\\Cattle Breed Classifier\\data'
 split_root = r'C:\\Users\\ACER\\Desktop\\Cattle Breed Classifier\\final_data'
 train_dir = os.path.join(split_root, 'train')
@@ -25,7 +24,7 @@ os.makedirs(val_dir, exist_ok=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"🚀 Using device: {device}")
 
-# --- prepare data paths ---
+
 classes = sorted(os.listdir(root_dir))
 class_to_idx = {cls: idx for idx, cls in enumerate(classes)}
 
@@ -42,20 +41,17 @@ train_imgs, val_imgs, train_lbls, val_lbls = train_test_split(
     image_paths, labels, test_size=0.2, stratify=labels, random_state=42
 )
 
-# --- dataset loaders ---
 train_ds = CattleDataset(train_imgs, train_lbls, train=True)
 val_ds = CattleDataset(val_imgs, val_lbls, train=False)
 train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
 
-# --- model setup ---
 model = create_resnet50(num_classes=len(classes), pretrained=True).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 best_val_acc = 0.0
 train_losses, val_losses, val_accuracies = [], [], []
 
-# --- training loop ---
 for epoch in range(15):
     model.train()
     running_loss, correct, total = 0, 0, 0
@@ -75,7 +71,7 @@ for epoch in range(15):
     avg_train_loss = running_loss / total
     train_losses.append(avg_train_loss)
 
-    # --- validation ---
+
     model.eval()
     val_loss, val_correct, val_total = 0, 0, 0
     y_true, y_pred = [], []
@@ -98,17 +94,15 @@ for epoch in range(15):
 
     print(f"Epoch {epoch+1}/{15} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f} | Val Acc: {val_acc:.4f}")
 
-    # Save best model
+    #
     if val_acc > best_val_acc:
         best_val_acc = val_acc
         torch.save({'model_state': model.state_dict(), 'classes': classes}, 'best_model.pth')
-        print(f"✅ New best model saved with val_acc = {val_acc:.4f}")
+        print(f"New best model saved with val_acc = {val_acc:.4f}")
 
-# --- final evaluation ---
 print("\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=classes))
 
-# --- Plot Loss & Accuracy ---
 plt.figure(figsize=(8, 5))
 plt.plot(train_losses, label='Train Loss')
 plt.plot(val_losses, label='Val Loss')
