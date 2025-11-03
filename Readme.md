@@ -61,12 +61,5 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
 3. **Running the Web App:**
    python -m streamlit run app.py
 
-Team Name: Epoch Makers
 
-Team coordinator name: Subal
 
-Team coordinator phone number:
-
-Project Theme: AI in Agriculture 
-
-Project Title: AI-Powered Breed Identification for Indian Livestock
