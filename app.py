@@ -6,7 +6,6 @@ from torchvision import models, transforms
 import time
 import os
 
-# ===== PAGE CONFIGURATION =====
 st.set_page_config(
     page_title="Indian Cattle Breed Classifier",
     page_icon="🐄",
@@ -14,7 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ===== BREED INFORMATION DATABASE =====
 BREED_INFO = {
     "Alambandi Cow": {
         "Origin": "Alambadi Village, Tamil Nadu, India",
@@ -575,10 +573,8 @@ BREED_INFO = {
     }
 }
 
-# ===== MODEL LOADING =====
 @st.cache_resource
 def load_model(model_path):
-    """Load the pre-trained ResNet-50 model"""
     try:
         if not os.path.exists(model_path):
             return None, None
@@ -587,7 +583,6 @@ def load_model(model_path):
         model_state = checkpoint['model_state']
         classes = checkpoint['classes']
 
-        # Define model structure
         model = models.resnet50(pretrained=False)
         model.fc = nn.Linear(model.fc.in_features, len(classes))
         model.load_state_dict(model_state)
@@ -599,16 +594,13 @@ def load_model(model_path):
         return None, None
 
 
-# ===== PREDICTION FUNCTION =====
+
 def predict(image, model_path='best_model.pth'):
-    """Predict cattle breed from image"""
     try:
-        # Load model + class names
         model, classes = load_model(model_path)
         if model is None or classes is None:
             return {"error": "Model file not found or corrupted."}
 
-        # Preprocessing
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -625,7 +617,6 @@ def predict(image, model_path='best_model.pth'):
 
         predicted_breed = classes[predicted_idx.item()]
 
-        # Top predictions
         top_probs, top_indices = torch.topk(probabilities, k=min(5, len(classes)))
         top_predictions = [
             {"breed": classes[idx.item()], "score": prob.item()}
@@ -641,8 +632,6 @@ def predict(image, model_path='best_model.pth'):
     except Exception as e:
         return {"error": f"Prediction error: {str(e)}"}
 
-
-# ===== CUSTOM CSS STYLING =====
 st.markdown("""
     <style>
     /* Import Google Fonts */
@@ -937,11 +926,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ===== INITIALIZE SESSION STATE =====
+
 if 'result' not in st.session_state:
     st.session_state['result'] = None
 
-# ===== HEADER =====
 st.markdown("""
     <div class='main-header'>
         <h1>🐄 Indian Cattle Breed Classifier 🐃</h1>
@@ -949,14 +937,14 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# ===== MAIN CONTENT =====
+
 col1, col2 = st.columns([1, 1], gap="large")
 
-# LEFT COLUMN - IMAGE INPUT
+
 with col1:
     st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
     
-    # ===== INPUT METHOD SELECTION =====
+    
     st.markdown("""
         <div class='input-method-card'>
             <h3 style='margin: 0; font-size: 1.3rem;'>📷 Choose Input Method</h3>
@@ -974,7 +962,6 @@ with col1:
     
     image = None
     
-    # ===== WEBCAM INPUT =====
     if input_method == "📸 Use Live Webcam":
         st.markdown("### 📸 Capture from Webcam")
         st.info("💡 Position the cattle in frame and click 'Take Photo'")
@@ -988,7 +975,7 @@ with col1:
             st.image(image, caption='📸 Captured Image', use_column_width=True)
             st.markdown("</div>", unsafe_allow_html=True)
             
-            # Image info
+            
             col_i1, col_i2, col_i3 = st.columns(3)
             with col_i1:
                 st.markdown(f"**Width:** {image.size[0]}px")
@@ -997,7 +984,7 @@ with col1:
             with col_i3:
                 st.markdown(f"**Format:** {image.format if image.format else 'JPEG'}")
     
-    # ===== FILE UPLOAD INPUT =====
+
     else:
         st.markdown("### 📤 Upload Cattle Image")
         
@@ -1015,7 +1002,7 @@ with col1:
             st.image(image, caption='📸 Uploaded Image', use_column_width=True)
             st.markdown("</div>", unsafe_allow_html=True)
             
-            # Image info
+            
             col_i1, col_i2, col_i3 = st.columns(3)
             with col_i1:
                 st.markdown(f"**Width:** {image.size[0]}px")
@@ -1024,7 +1011,7 @@ with col1:
             with col_i3:
                 st.markdown(f"**Format:** {image.format}")
     
-    # ===== FUN FACT DISPLAY =====
+    
     if image is not None and 'result' in st.session_state and st.session_state['result']:
         predicted_breed = st.session_state['result']['prediction']
         if predicted_breed in BREED_INFO:
@@ -1035,7 +1022,7 @@ with col1:
                 </div>
             """, unsafe_allow_html=True)
     
-    # ===== PREDICT BUTTON =====
+
     if image is not None:
         st.markdown("<br>", unsafe_allow_html=True)
         predict_button = st.button("🔍 Identify Breed Now", type="primary")
@@ -1048,7 +1035,7 @@ with col1:
                     progress_bar.progress(i + 1)
                 
                 try:
-                    # Call prediction function
+                    
                     result = predict(image, model_path='best_model.pth')
                     
                     if "error" in result:
@@ -1074,7 +1061,7 @@ with col1:
     
     st.markdown("</div>", unsafe_allow_html=True)
 
-# RIGHT COLUMN - RESULTS
+
 with col2:
     st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
     st.markdown("### 📊 Prediction Results")
@@ -1082,7 +1069,6 @@ with col2:
     if 'result' in st.session_state and st.session_state['result']:
         result = st.session_state['result']
         
-        # Main prediction display
         st.markdown(f"""
             <div class='prediction-box'>
                 <h3>🎯 Identified Breed</h3>
@@ -1091,7 +1077,7 @@ with col2:
             </div>
         """, unsafe_allow_html=True)
         
-        # Confidence indicator with badges
+        
         confidence_level = result['confidence']
         if confidence_level > 0.8:
             st.markdown("<div class='confidence-badge confidence-high'>🎯 High Confidence Prediction</div>", unsafe_allow_html=True)
@@ -1102,13 +1088,13 @@ with col2:
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Top 3 predictions
+        
         st.markdown("#### 🏆 Top 3 Predictions")
         
         for i, pred in enumerate(result['top_n_predictions'][:3], 1):
             confidence_pct = pred['score'] * 100
             
-            # Medal emojis
+           
             medals = {1: "🥇", 2: "🥈", 3: "🥉"}
             
             st.markdown(f"""
@@ -1139,7 +1125,6 @@ with col2:
     
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ===== BREED INFORMATION SECTION =====
 if 'result' in st.session_state and st.session_state['result']:
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -1154,7 +1139,6 @@ if 'result' in st.session_state and st.session_state['result']:
     if predicted_breed in BREED_INFO:
         breed_data = BREED_INFO[predicted_breed]
         
-        # Key Metrics at Top
         st.markdown("<br>", unsafe_allow_html=True)
         metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
         
@@ -1193,7 +1177,6 @@ if 'result' in st.session_state and st.session_state['result']:
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Tabs for organized information
         tab1, tab2, tab3, tab4 = st.tabs(["📝 Overview", "🎯 Characteristics", "📊 Detailed Metrics", "🌟 Special Info"])
         
         with tab1:
@@ -1270,7 +1253,7 @@ if 'result' in st.session_state and st.session_state['result']:
                 """, unsafe_allow_html=True)
         
         with tab3:
-            # Detailed table
+        
             st.markdown("#### 📋 Complete Breed Profile")
             
             info_data = {
@@ -1308,7 +1291,7 @@ if 'result' in st.session_state and st.session_state['result']:
             
             st.markdown("<br>", unsafe_allow_html=True)
             
-            # Additional interesting section
+          
             st.markdown("""
                 <div class='breed-detail-card'>
                     <h4 style='color: #667eea; margin-top: 0;'>🌾 Cultural Significance</h4>
@@ -1322,7 +1305,7 @@ if 'result' in st.session_state and st.session_state['result']:
     else:
         st.warning("⚠️ Detailed information not available for this breed.")
 
-# ===== FOOTER =====
+
 st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("""
     <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
