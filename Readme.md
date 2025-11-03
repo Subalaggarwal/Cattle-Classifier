@@ -35,7 +35,7 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
 
 ### 🧩 Prerequisites
 - Python **3.8+**
-- Basic knowledge of PyTorch and Streamlit (optional)
+- Basic knowledge of PyTorch and Streamlit 
 
 ### 🛠️ Setup
 
