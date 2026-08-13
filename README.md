@@ -1,4 +1,4 @@
-# 🐮 AI-Powered Indian Cattle Breed Identifier
+# AI-Powered Indian Cattle Breed Identifier
 
 This project provides a **robust AI-powered image classification system** for identifying various **Indian cattle and buffalo breeds**, complete with a user-friendly **Streamlit web application** for real-time prediction and detailed breed information.
 
@@ -6,17 +6,17 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
 
 ---
 
-## 🌟 Features
+## Features
 
-- 🖼️ **Real-time Prediction** – Upload an image or use your camera to instantly classify the cattle breed.  
-- 📊 **Top-3 Confidence Scores** – Displays the top 3 predicted breeds with confidence percentages.  
-- 📘 **Detailed Breed Information** – Includes origin, primary use, key traits, and milk yield for 30+ Indian breeds (loaded from `config.py`).  
-- 🧠 **Transfer Learning** – Fine-tuned **ResNet-50** model.  
-- ⚡ **User-Friendly Web App** – Built using **Streamlit** for an intuitive interface.  
+- **Real-time Prediction** – Upload an image or use your camera to instantly classify the cattle breed.  
+- **Top-3 Confidence Scores** – Displays the top 3 predicted breeds with confidence percentages.  
+- **Detailed Breed Information** – Includes origin, primary use, key traits, and milk yield for 30+ Indian breeds (loaded from `config.py`).  
+- **Transfer Learning** – Fine-tuned **ResNet-50** model.  
+- **User-Friendly Web App** – Built using **Streamlit** for an intuitive interface.  
 
 ---
 
-## 💻 Project Structure
+## Project Structure
 
 | File / Folder | Description |
 |----------------|-------------|
@@ -31,13 +31,13 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
-### 🧩 Prerequisites
+### Prerequisites
 - Python **3.8+**
 - Basic knowledge of PyTorch and Streamlit 
 
-### 🛠️ Setup
+###  Setup
 
 1. **Clone the repository:**
    ```bash
@@ -48,7 +48,7 @@ The classification model is based on a **fine-tuned ResNet-50 architecture**, le
    pip install streamlit scikit-learn matplotlib Pillow gTTS tqdm
 
 
-## 🚀 Usage
+##  Usage
 
 1. **Training the Model:**
    python train.py
